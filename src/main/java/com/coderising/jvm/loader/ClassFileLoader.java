@@ -73,7 +73,7 @@ public class ClassFileLoader {
 
 	public ClassFile loadClass(String className) {
 		byte[] codes = this.readBinaryCode(className);
-		ClassFileParser parser = new ClassFileParser();
+		ClassFileParser parser = new ClassFileParser();//解析字节码数组
 		return parser.parse(codes);
 		
 	}

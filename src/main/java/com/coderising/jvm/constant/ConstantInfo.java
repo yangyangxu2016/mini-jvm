@@ -1,5 +1,8 @@
 package com.coderising.jvm.constant;
 
+/**
+ * 常量池tag:
+ */
 public abstract class ConstantInfo {
 	public static final int UTF8_INFO = 1;
 	public static final int FLOAT_INFO = 4;

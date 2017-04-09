@@ -16,6 +16,7 @@ import com.coderising.jvm.constant.UTF8Info;
 
 public class ClassFileParser {
 
+	//解析字节码数组
 	public ClassFile parse(byte[] codes) {
 
 		

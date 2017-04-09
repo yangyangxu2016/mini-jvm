@@ -23,19 +23,19 @@ public class ClassFileloaderTest {
 	
 	private static final String FULL_QUALIFIED_CLASS_NAME = "com/coderising/jvm/test/EmployeeV1";
 	
-	static String path1 = "C:\\Users\\liuxin\\git\\coding2017\\liuxin\\mini-jvm\\bin";
+	static String path1 = "F:\\mini-jvm\\target\\classes";
 	static String path2 = "C:\temp";
-	
+
 	static ClassFile clzFile = null;
 	static {
 		ClassFileLoader loader = new ClassFileLoader();
 		loader.addClassPath(path1);
 		String className = "com.coderising.jvm.test.EmployeeV1";
-		
-		clzFile = loader.loadClass(className);
+
+		clzFile = loader.loadClass(className);//解析字节码数组
 		clzFile.print();
 	}
-	
+
 	
 	@Before
 	public void setUp() throws Exception {		 

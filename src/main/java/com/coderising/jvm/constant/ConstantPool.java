@@ -18,6 +18,8 @@ public class ConstantPool {
 	}
 	
 	public ConstantInfo getConstantInfo(int index){
+
+
 		return this.constantInfos.get(index);
 	}
 	public String getUTF8String(int index){

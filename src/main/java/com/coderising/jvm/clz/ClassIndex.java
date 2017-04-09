@@ -1,5 +1,9 @@
 package com.coderising.jvm.clz;
 
+
+/**
+ * 索引类:定义了当前类和父类在常量池中的索引
+ */
 public class ClassIndex {
 	private int thisClassIndex;
 	private int superClassIndex;
