@@ -1,72 +1,33 @@
 package com.coderising.jvm.loader;
 
-import org.jetbrains.annotations.NotNull;
-
-import java.io.DataInput;
-import java.io.IOException;
-
-public class ByteCodeIterator implements DataInput{
 
 
-    public void readFully(byte[] b) throws IOException {
+public class ByteCodeIterator {
 
+
+
+    private byte[] bytes;
+
+    private int index;
+
+    public ByteCodeIterator(byte[] bytes) {
+        this.bytes = new byte[bytes.length];
+        System.arraycopy(bytes,0,this.bytes,0,bytes.length);
+        this.index =  0;
     }
 
-    public void readFully(byte[] b, int off, int len) throws IOException {
-
+    public byte[] getNext(int length){
+        byte[] newBytes = new byte[length];
+        for (int i = 0; i < length && index<bytes.length; i++,index++) {
+            newBytes[i] = bytes[index];
+        }
+        return newBytes;
     }
 
-    public int skipBytes(int n) throws IOException {
-        return 0;
+    public boolean hasNext() {
+        return index<=bytes.length;
     }
 
-    public boolean readBoolean() throws IOException {
-        return false;
-    }
 
-    public byte readByte() throws IOException {
-        return 0;
-    }
 
-    public int readUnsignedByte() throws IOException {
-
-        return 0;
-    }
-
-    public short readShort() throws IOException {
-        return 0;
-    }
-
-    public int readUnsignedShort() throws IOException {
-        return 0;
-    }
-
-    public char readChar() throws IOException {
-        return 0;
-    }
-
-    public int readInt() throws IOException {
-        return 0;
-    }
-
-    public long readLong() throws IOException {
-        return 0;
-    }
-
-    public float readFloat() throws IOException {
-        return 0;
-    }
-
-    public double readDouble() throws IOException {
-        return 0;
-    }
-
-    public String readLine() throws IOException {
-        return null;
-    }
-
-    @NotNull
-    public String readUTF() throws IOException {
-        return null;
-    }
 }
