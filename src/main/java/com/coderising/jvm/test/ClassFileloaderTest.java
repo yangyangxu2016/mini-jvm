@@ -1,18 +1,13 @@
 package com.coderising.jvm.test;
 
-import org.junit.After;
-import  org.junit.Assert;
-import org.junit.Before;
-import org.junit.Test;
-
 import com.coderising.jvm.clz.ClassFile;
 import com.coderising.jvm.clz.ClassIndex;
-import com.coderising.jvm.constant.ClassInfo;
-import com.coderising.jvm.constant.ConstantPool;
-import com.coderising.jvm.constant.MethodRefInfo;
-import com.coderising.jvm.constant.NameAndTypeInfo;
-import com.coderising.jvm.constant.UTF8Info;
+import com.coderising.jvm.constant.*;
 import com.coderising.jvm.loader.ClassFileLoader;
+import org.junit.After;
+import org.junit.Assert;
+import org.junit.Before;
+import org.junit.Test;
 
 
 
@@ -23,14 +18,14 @@ public class ClassFileloaderTest {
 	
 	private static final String FULL_QUALIFIED_CLASS_NAME = "com/coderising/jvm/test/EmployeeV1";
 	
-	static String path1 = "F:\\mini-jvm\\target\\classes";
+	static String path1 = "F:\\mini-jvm";
 	static String path2 = "C:\temp";
 
 	static ClassFile clzFile = null;
 	static {
 		ClassFileLoader loader = new ClassFileLoader();
 		loader.addClassPath(path1);
-		String className = "com.coderising.jvm.test.EmployeeV1";
+		String className = "EmployeeV1";
 
 		clzFile = loader.loadClass(className);//解析字节码数组
 		clzFile.print();

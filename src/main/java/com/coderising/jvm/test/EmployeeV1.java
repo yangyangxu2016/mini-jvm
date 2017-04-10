@@ -1,8 +1,7 @@
 package com.coderising.jvm.test;
 
 public class EmployeeV1 {
-	
-	
+
 	private String name;
     private int age;
     
