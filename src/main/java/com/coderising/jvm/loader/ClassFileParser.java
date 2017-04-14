@@ -68,20 +68,21 @@ public class ClassFileParser {
 
 		int constantSize =  iter.nextU2ToInt();
 		System.out.println("常量池数量:" + constantSize);
-		ConstantPool constantPool = new ConstantPool();
-		constantPool.addConstantInfo(new NullConstantInfo());
+		ConstantPool pool = new ConstantPool();
+		pool.addConstantInfo(new NullConstantInfo());
 
 
-		for (int i = 1; i < constantSize - 1; i++) {
+		for (int i = 1; i <=constantSize-1; i++) {
 			int tag = iter.nextU1ToInt();
 			if (tag == 7) {
-				//Class Info
+				// Class Info
 				int utf8Index = iter.nextU2ToInt();
-				ClassInfo clzInfo = new ClassInfo(constantPool);
+				ClassInfo clzInfo = new ClassInfo(pool);
 				clzInfo.setUtf8Index(utf8Index);
-				constantPool.addConstantInfo(clzInfo);
+
+				pool.addConstantInfo(clzInfo);
 			} else if (tag == 1) {
-				//UTF-8 String
+				// UTF-8 String
 				int len = iter.nextU2ToInt();
 				byte[] data = iter.getBytes(len);
 				String value = null;
@@ -90,69 +91,41 @@ public class ClassFileParser {
 				} catch (UnsupportedEncodingException e) {
 					e.printStackTrace();
 				}
-				UTF8Info utf8Str = new UTF8Info(constantPool);
+
+				UTF8Info utf8Str = new UTF8Info(pool);
 				utf8Str.setLength(len);
 				utf8Str.setValue(value);
+				pool.addConstantInfo(utf8Str);
 			}else if (tag == 8) {
-				StringInfo info = new StringInfo(constantPool);
+				StringInfo info = new StringInfo(pool);
 				info.setIndex(iter.nextU2ToInt());
-				constantPool.addConstantInfo(info);
+				pool.addConstantInfo(info);
 			} else if (tag == 9) {
-				FieldRefInfo field = new FieldRefInfo(constantPool);
+				FieldRefInfo field = new FieldRefInfo(pool);
+				field.setClassInfoIndex(iter.nextU2ToInt());
 				field.setNameAndTypeIndex(iter.nextU2ToInt());
-				constantPool.addConstantInfo(field);
+				pool.addConstantInfo(field);
 			} else if (tag == 10) {
 				// MethodRef
-				MethodRefInfo method = new MethodRefInfo(constantPool);
+				MethodRefInfo method = new MethodRefInfo(pool);
 				method.setClassInfoIndex(iter.nextU2ToInt());
 				method.setNameAndTypeIndex(iter.nextU2ToInt());
-				constantPool.addConstantInfo(method);
+				pool.addConstantInfo(method);
 			} else if (tag == 12) {
 				// Name and Type Info
-				NameAndTypeInfo nameType = new NameAndTypeInfo(constantPool);
+				NameAndTypeInfo nameType = new NameAndTypeInfo(pool);
 				nameType.setIndex1(iter.nextU2ToInt());
 				nameType.setIndex2(iter.nextU2ToInt());
-				constantPool.addConstantInfo(nameType);
+				pool.addConstantInfo(nameType);
 			} else {
 				throw new RuntimeException("the constant pool tag " + tag + " has not been implemented yet.");
 			}
-			System.out.println("Finished reading Constant pool ");
-
-			return constantPool;
-
 		}
 
+		System.out.println("Finished reading Constant pool ");
+		return pool;
 
 
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-//
-//		int index = 1;
-//		while (iter.hasNext() && index++ < constantSize-1) {
-//			constantPool.addConstantInfo(ContantIterUtil.parseType(constantPool, iter));
-//		}
-		return constantPool;
 	}
 
 	

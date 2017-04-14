@@ -4,6 +4,7 @@ import com.coderising.jvm.clz.ClassFile;
 import com.coderising.jvm.clz.ClassIndex;
 import com.coderising.jvm.constant.*;
 import com.coderising.jvm.loader.ClassFileLoader;
+import com.coderising.jvm.util.BytesIterUtil;
 import org.junit.After;
 import org.junit.Assert;
 import org.junit.Before;
@@ -15,10 +16,10 @@ import org.junit.Test;
 
 public class ClassFileloaderTest {
 
-	
+//	C:\github\mini-jvm\target\classes\com\coderising\jvm\test
 	private static final String FULL_QUALIFIED_CLASS_NAME = "com/coderising/jvm/test/EmployeeV1";
 	
-	static String path1 = "F:\\mini-jvm";
+	static String path1 = "C:\\github\\mini-jvm";
 	static String path2 = "C:\temp";
 
 	static ClassFile clzFile = null;
@@ -39,7 +40,11 @@ public class ClassFileloaderTest {
 	@After
 	public void tearDown() throws Exception {
 	}
-	
+
+
+	/**
+	 * 下面是第一次JVM课应实现的测试用例
+	 */
 	@Test
 	public void testClassPath(){		
 		
@@ -59,7 +64,7 @@ public class ClassFileloaderTest {
 		ClassFileLoader loader = new ClassFileLoader();
 		loader.addClassPath(path1);
 		
-		String className = "com.coderising.jvm.test.EmployeeV1";
+		String className = "EmployeeV1";
 		
 		byte[] byteCodes = loader.readBinaryCode(className);
 		
@@ -73,41 +78,27 @@ public class ClassFileloaderTest {
 	public void testMagicNumber(){
     	ClassFileLoader loader = new ClassFileLoader();
 		loader.addClassPath(path1);
-		String className = "com.coderising.jvm.test.EmployeeV1";
+		String className = "EmployeeV1";
 		byte[] byteCodes = loader.readBinaryCode(className);
 		byte[] codes = new byte[]{byteCodes[0],byteCodes[1],byteCodes[2],byteCodes[3]};
-		
-		
-		String acctualValue = this.byteToHexString(codes);
+
+		String acctualValue = BytesIterUtil.byteToHexString(codes);
 		
 		Assert.assertEquals("cafebabe", acctualValue);
 	}
-    
-    
-    
-   	private String byteToHexString(byte[] codes ){
-   		StringBuffer buffer = new StringBuffer();
-   		for(int i=0;i<codes.length;i++){
-   			byte b = codes[i];
-   			int value = b & 0xFF;
-   			String strHex = Integer.toHexString(value);
-   			if(strHex.length()< 2){
-   				strHex = "0" + strHex;
-   			}		
-   			buffer.append(strHex);
-   		}
-   		return buffer.toString();
-   	}
-    
-    /**
-     * ----------------------------------------------------------------------
-     */
-    
+
+
+
+
+	/**
+	 * 下面是第二次JVM课应实现的测试用例
+	 */
     
     @Test
-    public void testVersion(){    			
-		
+    public void testVersion(){
+		System.out.println("主版本号: "+clzFile.getMajorVersion());
 		Assert.assertEquals(0, clzFile.getMinorVersion());
+		System.out.println("次版本号: "+clzFile.getMinorVersion());
 		Assert.assertEquals(52, clzFile.getMajorVersion());
 		
     }

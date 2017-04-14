@@ -28,7 +28,7 @@ public class ClassInfo extends ConstantInfo {
 	
 	public String getClassName() {		
 		int index = getUtf8Index();
-		UTF8Info utf8Info = (UTF8Info)constantPool.getConstantInfo(index);
+		UTF8Info utf8Info = (UTF8Info) constantPool.getConstantInfo(index);
 		return utf8Info.getValue();		
 	}
 }

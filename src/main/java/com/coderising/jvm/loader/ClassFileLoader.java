@@ -9,9 +9,6 @@ import java.util.ArrayList;
 import java.util.List;
 
 
-
-
-
 public class ClassFileLoader {
 
 	private List<String> clzPaths = new ArrayList<String>();
