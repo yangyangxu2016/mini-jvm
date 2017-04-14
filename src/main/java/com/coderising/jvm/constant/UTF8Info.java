@@ -17,6 +17,7 @@ public class UTF8Info extends ConstantInfo{
 	 * bytes[length]是表示字符串值的byte数组，bytes[]数组中每个成员的byte值都不会是0，也不在 0xf0 至 0xff 范围内。
 	 */
 	private String value;
+
 	public UTF8Info(ConstantPool pool) {
 		super(pool);
 	}

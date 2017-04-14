@@ -2,6 +2,11 @@ package com.coderising.jvm.clz;
 
 import com.coderising.jvm.constant.ClassInfo;
 import com.coderising.jvm.constant.ConstantPool;
+import com.coderising.jvm.field.Field;
+import com.coderising.jvm.method.Method;
+
+import java.util.ArrayList;
+import java.util.List;
 
 /**
  * 类文件结构
@@ -16,6 +21,8 @@ public class ClassFile {
     private AccessFlag accessFlag;//修饰符
     private ClassIndex clzIndex;//索引类:定义了当前类和父类
     private ConstantPool constantPool;//常量池大小为常量数量减一
+    private List<Field> fields = new ArrayList<>();//字段集合
+    private List<Method> methods = new ArrayList<>();//方法集合
 
     public String getMagic() {
         return magic;
@@ -63,6 +70,24 @@ public class ClassFile {
 
     public void setConstantPool(ConstantPool constantPool) {
         this.constantPool = constantPool;
+    }
+
+    public List<Field> getFields() {
+        return fields;
+    }
+
+    public ClassFile setFields(List<Field> fields) {
+        this.fields = fields;
+        return this;
+    }
+
+    public List<Method> getMethods() {
+        return methods;
+    }
+
+    public ClassFile setMethods(List<Method> methods) {
+        this.methods = methods;
+        return this;
     }
 
     public void print() {

@@ -24,7 +24,6 @@ public class FieldRefInfo extends ConstantInfo{
 	public int getType() {
 		return type;
 	}
-	
 	public int getClassInfoIndex() {
 		return classInfoIndex;
 	}
