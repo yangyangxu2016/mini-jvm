@@ -1,7 +1,10 @@
 package com.coderising.jvm.method;
 
+import com.coderising.jvm.attr.AttributeInfo;
 import com.coderising.jvm.attr.CodeAttr;
 import com.coderising.jvm.clz.ClassFile;
+import com.coderising.jvm.constant.ConstantPool;
+import com.coderising.jvm.constant.UTF8Info;
 import com.coderising.jvm.loader.ByteCodeIterator;
 
 /**
@@ -74,7 +77,42 @@ public class Method {
     }
 
     public static Method parse(ClassFile clzFile, ByteCodeIterator iterator){
-        return null;
+        int accessFlag = iterator.nextU2ToInt();
+        int nameIndex = iterator.nextU2ToInt();
+        int descriptorIndex = iterator.nextU2ToInt();
+        int arrtibutesCount = iterator.nextU2ToInt();
 
+        Method method = new Method(accessFlag, nameIndex, descriptorIndex, clzFile);
+        for (int i = 0; i < arrtibutesCount; i++) {
+            int attrNameIndex = iterator.nextU2ToInt();
+            String attrName = clzFile.getConstantPool().getUTF8String(attrNameIndex);
+            iterator.back(2);
+
+            if (AttributeInfo.CODE.equals(attrName)) {
+                CodeAttr codeAttr = CodeAttr.parse(clzFile, iterator);
+                method.setCodeAtrr(codeAttr);
+            }else {
+                throw new RuntimeException("只实现了code属性,还没有实现这个属性: "+ attrName);
+            }
+        }
+        return method;
+
+    }
+
+
+    public String toString() {
+
+        ConstantPool pool = this.classFile.getConstantPool();
+        StringBuilder buffer = new StringBuilder();
+
+        String name = ((UTF8Info)pool.getConstantInfo(this.nameIndex)).getValue();
+
+        String desc = ((UTF8Info)pool.getConstantInfo(this.descriptorIndex)).getValue();
+
+        buffer.append(name).append(":").append(desc).append("\n");
+
+        buffer.append(this.codeAtrr.toString(pool));
+
+        return buffer.toString();
     }
 }

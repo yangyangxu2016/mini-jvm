@@ -4,6 +4,8 @@ import com.coderising.jvm.clz.AccessFlag;
 import com.coderising.jvm.clz.ClassFile;
 import com.coderising.jvm.clz.ClassIndex;
 import com.coderising.jvm.constant.*;
+import com.coderising.jvm.field.Field;
+import com.coderising.jvm.method.Method;
 
 import java.io.UnsupportedEncodingException;
 
@@ -19,47 +21,48 @@ public class ClassFileParser {
 		if (!"cafebabe".equals(magicNumber)) {
 			return null;
 		}
-		classFile.setMagic(magicNumber);
-		classFile.setMinorVersion(iterator.nextU2ToInt());
-		classFile.setMajorVersion(iterator.nextU2ToInt() );
+		classFile.setMagic(magicNumber);//魔数
+		classFile.setMinorVersion(iterator.nextU2ToInt());//次版本号
+		classFile.setMajorVersion(iterator.nextU2ToInt() );//主版本号
 
 		ConstantPool pool = parseConstantPool(iterator);
-		classFile.setConstantPool(pool);
+		classFile.setConstantPool(pool);//常量池
 
 		AccessFlag flag = parseAccessFlag(iterator);
-		classFile.setAccessFlag(flag);
+		classFile.setAccessFlag(flag);//类访问标志
 
 		ClassIndex clzIndex = parseClassIndex(iterator);
-		classFile.setClzIndex(clzIndex);
+		classFile.setClzIndex(clzIndex);//类和父类索引
 
-		parseInterfaces(iterator);
+		parseInterfaces(iterator);//接口
+
+		praseFields(classFile, iterator);//字段
+
+		prrseMethods(classFile, iterator);//方法
+
 
 		return classFile;
 	}
-	private void parseInterfaces(ByteCodeIterator iter) {
-		int interfaceCount = iter.nextU2ToInt();
 
-		System.out.println("interfaceCount:" + interfaceCount);
+	private void prrseMethods(ClassFile classFile, ByteCodeIterator iterator) {
+		int methodCount = iterator.nextU2ToInt();
 
-		// TODO : 如果实现了interface, 这里需要解析
+		for (int i = 0; i < methodCount; i++) {
+			Method method = Method.parse(classFile, iterator);
+			classFile.getMethods().add(method);
+		}
+
 	}
 
-	private AccessFlag parseAccessFlag(ByteCodeIterator iter) {
-		AccessFlag flag = new AccessFlag(iter.nextU2ToInt());
-		return  flag;
-	}
 
-	private ClassIndex parseClassIndex(ByteCodeIterator iter) {
+	private void praseFields(ClassFile classFile, ByteCodeIterator iterator) {
 
-		int thisClassIndex = iter.nextU2ToInt();
-		int superClassIndex = iter.nextU2ToInt();
+		int fieldCount = iterator.nextU2ToInt();
 
-		ClassIndex classIndex = new ClassIndex();
-
-		classIndex.setThisClassIndex(thisClassIndex);
-		classIndex.setSuperClassIndex(superClassIndex);
-
-		return classIndex;
+		for (int i = 0; i < fieldCount; i++) {
+			Field field = Field.parse(classFile.getConstantPool(), iterator);
+			classFile.getFields().add(field);
+		}
 	}
 
 	//解析常量池
@@ -124,9 +127,35 @@ public class ClassFileParser {
 
 		System.out.println("Finished reading Constant pool ");
 		return pool;
-
-
 	}
+
+
+	private AccessFlag parseAccessFlag(ByteCodeIterator iter) {
+		AccessFlag flag = new AccessFlag(iter.nextU2ToInt());
+		return  flag;
+	}
+
+	private ClassIndex parseClassIndex(ByteCodeIterator iter) {
+		int thisClassIndex = iter.nextU2ToInt();
+		int superClassIndex = iter.nextU2ToInt();
+
+		ClassIndex classIndex = new ClassIndex();
+
+		classIndex.setThisClassIndex(thisClassIndex);
+		classIndex.setSuperClassIndex(superClassIndex);
+
+		return classIndex;
+	}
+
+	private void parseInterfaces(ByteCodeIterator iter) {
+		int interfaceCount = iter.nextU2ToInt();
+		System.out.println("interfaceCount:" + interfaceCount);
+		// TODO : 如果实现了interface, 这里需要解析
+	}
+
+
+
+
 
 	
 }

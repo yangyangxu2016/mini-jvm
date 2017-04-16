@@ -1,6 +1,7 @@
 package com.coderising.jvm.field;
 
 import com.coderising.jvm.constant.ConstantPool;
+import com.coderising.jvm.constant.UTF8Info;
 import com.coderising.jvm.loader.ByteCodeIterator;
 
 /**
@@ -18,7 +19,7 @@ public class Field {
 
     private ConstantPool pool;
 
-    public Field(int accessFlag, int descriptorIndex, int nameIndex, ConstantPool pool) {
+    public Field(int accessFlag, int nameIndex,int descriptorIndex,  ConstantPool pool) {
         this.accessFlag = accessFlag;
         this.descriptorIndex = descriptorIndex;
         this.nameIndex = nameIndex;
@@ -29,6 +30,22 @@ public class Field {
     //解析常量池
     public static Field parse(ConstantPool pool, ByteCodeIterator iterator) {
 
-        return null;
+        int accessFlag = iterator.nextU2ToInt();
+        int nameIndex = iterator.nextU2ToInt();
+        int descriptorIndex = iterator.nextU2ToInt();
+        int attributesCount = iterator.nextU2ToInt();
+        Field field = new Field(accessFlag, nameIndex, descriptorIndex, pool);
+
+        if (attributesCount > 0) {
+            throw new RuntimeException("Field Attribute has not been implemented");
+        }
+        return field;
+    }
+
+    public String toString() {
+        String name = ((UTF8Info)pool.getConstantInfo(this.nameIndex)).getValue();
+
+        String desc = ((UTF8Info)pool.getConstantInfo(this.descriptorIndex)).getValue();
+        return name +":"+ desc;
     }
 }

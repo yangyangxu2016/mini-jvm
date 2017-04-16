@@ -23,6 +23,7 @@ public class ClassFile {
     private ConstantPool constantPool;//常量池大小为常量数量减一
     private List<Field> fields = new ArrayList<>();//字段集合
     private List<Method> methods = new ArrayList<>();//方法集合
+    // TODO :接口集合和属性集合
 
     public String getMagic() {
         return magic;
@@ -90,18 +91,6 @@ public class ClassFile {
         return this;
     }
 
-    public void print() {
-
-        if (this.accessFlag.isPublicClass()) {
-            System.out.println("Access flag : public  ");
-        }
-        System.out.println("Class Name:" + getClassName());
-
-        System.out.println("Super Class Name:" + getSuperClassName());
-
-
-    }
-
     private String getClassName() {
         int thisClassIndex = this.clzIndex.getThisClassIndex();//获得类索引
         ClassInfo thisClass = (ClassInfo) this.getConstantPool().getConstantInfo(thisClassIndex);
@@ -112,5 +101,17 @@ public class ClassFile {
         int superClassIndex = this.clzIndex.getSuperClassIndex();//获得父类索引
         ClassInfo superClass = (ClassInfo) this.getConstantPool().getConstantInfo(superClassIndex);
         return superClass.getClassName();
+    }
+
+    public void print() {
+
+        if (this.accessFlag.isPublicClass()) {
+            System.out.println("Access flag : public  ");
+        }
+        System.out.println("Class Name:" + getClassName());
+
+        System.out.println("Super Class Name:" + getSuperClassName());
+
+
     }
 }

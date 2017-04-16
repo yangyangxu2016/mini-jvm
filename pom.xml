@@ -16,6 +16,7 @@
   <url>http://maven.apache.org</url>
 
   <properties>
+    <kotlin.version>1.0.7</kotlin.version>
     <commons-collections4.version>4.1</commons-collections4.version>
     <commons-lang3.version>3.5</commons-lang3.version>
     <guava.version>19.0</guava.version>
@@ -79,10 +80,17 @@
       <version>${org.slf4j.version}</version>
     </dependency>
 
+    <dependency>
+      <groupId>org.jetbrains.kotlin</groupId>
+      <artifactId>kotlin-stdlib</artifactId>
+      <version>${kotlin.version}</version>
+    </dependency>
+
   </dependencies>
 
   <build>
     <plugins>
+
       <plugin>
         <groupId>org.apache.maven.plugins</groupId>
         <artifactId>maven-compiler-plugin</artifactId>
@@ -91,6 +99,7 @@
           <target>${jdk.target.version}</target>
         </configuration>
       </plugin>
+
       <plugin>
         <groupId>org.apache.maven.plugins</groupId>
         <artifactId>maven-surefire-plugin</artifactId>
@@ -98,7 +107,41 @@
           <skip>${maven-surefire-plugin.skip}</skip>
         </configuration>
       </plugin>
+
+      <plugin>
+        <groupId>org.jetbrains.kotlin</groupId>
+        <artifactId>kotlin-maven-plugin</artifactId>
+        <version>${kotlin.version}</version>
+        <executions>
+          <execution>
+            <id>compile</id>
+            <phase>process-sources</phase>
+            <goals>
+              <goal>compile</goal>
+            </goals>
+            <configuration>
+              <sourceDirs>
+                <source>src/main/java</source>
+              </sourceDirs>
+            </configuration>
+          </execution>
+          <execution>
+            <id>test-compile</id>
+            <phase>process-test-sources</phase>
+            <goals>
+              <goal>test-compile</goal>
+            </goals>
+            <configuration>
+              <sourceDirs>
+                <source>src/test/java</source>
+              </sourceDirs>
+            </configuration>
+          </execution>
+        </executions>
+      </plugin>
+
     </plugins>
+
   </build>
 
 </project>
