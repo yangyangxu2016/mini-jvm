@@ -1,5 +1,6 @@
 package com.coding.basic.stack.expr;
 
+import java.util.List;
 import java.util.Stack;
 
 /**
@@ -17,124 +18,58 @@ public class InfixExpr {
 
     public float evaluate() {
 
-        constructStacks();
+        TokenParser parser = new TokenParser();
+        List<Token> tokens = parser.parse(this.expr);
 
-        calculateWithStacks();
+        Stack<Token> opStack = new Stack<>();
+        Stack<Float> numStack = new Stack<>();
 
-        return 0.0f;
-    }
-
-
-    private void calculateWithStacks() {
-
-        while (!operatorStack.isEmpty()) {
-            operandStack.push(processCalc((Float) operandStack.pop()));
-        }
-
-
-    }
-
-    private float processCalc(Float arg2) {
-        if (operandStack.isEmpty() || operatorStack.isEmpty()) {
-            throw new RuntimeException();
-        }
-
-        Float arg1 = (Float) operandStack.pop();
-        char operator = ((Character) (operatorStack.pop())).charValue();
-        switch (operator) {
-            case '+':
-                return arg1 + arg2;
-            case '-':
-                return arg1 - arg2;
-            case '*':
-                return arg1 * arg2;
-            case '/':
-                return arg1 / arg2;
-            default:
-                throw new RuntimeException();
-
-        }
-
-    }
-    private void constructStacks() {
-
-        int operandStart = 0;
-        int len = expr.length();
-        for (int i = 0; i < len; i++) {
-            char exprChar = expr.charAt(i);//取字符
-            if (isOperator(exprChar)) {
-                onNewOperandFound(exprChar, Float.parseFloat(expr.substring(operandStart, i)));
-                operatorStack.push(exprChar);
-                operandStart = i + 1;
+        for (Token token : tokens) {
+            if (token.isOperator()) {
+                if (opStack.isEmpty()) {
+                    opStack.push(token);
+                } else {
+                    while (!opStack.isEmpty() && !token.hasHigherPriority(opStack.peek())) {
+                        Token preOperator = opStack.pop();
+                        Float f2 = numStack.pop();
+                        Float f1 = numStack.pop();
+                        Float result = calculate(preOperator.toString(), f1, f2);
+                        numStack.push(result);
+                    }
+                    opStack.push(token);
+                }
+            }
+            if (token.isNumber()) {
+                numStack.push(new Float(token.getIntValue()));
             }
         }
-        onNewOperandFound(null, Float.parseFloat(expr.substring(operandStart)));
 
+        while (!opStack.isEmpty()) {
+            Token token = opStack.pop();
+            Float f2 = numStack.pop();
+            Float f1  = numStack.pop();
+            numStack.push(calculate(token.toString(), f1, f2));
+        }
 
+        return numStack.pop().floatValue();
     }
 
-    private void onNewOperandFound(Character exprChar, Float newOperand) {
-        newOperand = shiftOperator(newOperand);
-        while (needToProcessCalcWithHigherPriority(exprChar)) {
-            newOperand = processCalc(newOperand);
-            operandStack.push(newOperand);
-            newOperand = null;
+    private Float calculate(String op, Float f1, Float f2) {
+
+        if (op.equals("+")) {
+            return f1+f2;
         }
-        if (newOperand != null) {
-            operandStack.push(newOperand);
+        if(op.equals("-")){
+            return f1-f2;
         }
-
-    }
-
-    private boolean needToProcessCalcWithHigherPriority(Character operator) {
-        if (operator == null || operatorStack.isEmpty()) {
-            return false;
+        if(op.equals("*")){
+            return f1*f2;
         }
-        Character lastOperatorInStack = (Character) (operatorStack.peek());
-        if ((operator == '+' || operator == '-') &&
-                (lastOperatorInStack == '*' || lastOperatorInStack == '/')) {
-            return true;
-        } else {
-            return false;
+        if(op.equals("/")){
+            return f1/f2;
         }
+        throw new RuntimeException(op + " is not supported");
 
-
-    }
-
-    private float shiftOperator(float newOperand) {
-
-        if (operatorStack.isEmpty()) {
-            return newOperand;
-        }
-        Character lastOperatorInStack = (Character) (operatorStack.pop());
-
-        switch (lastOperatorInStack.charValue()) {
-            case '-':
-                operatorStack.push('+');
-                return newOperand * (-1);
-            case '/':
-                operatorStack.push('*');
-                return 1 / newOperand;
-            default:
-                operatorStack.push(lastOperatorInStack);
-                return newOperand;
-        }
-
-
-    }
-
-
-    Stack operatorStack = new Stack();
-    Stack operandStack = new Stack();
-
-
-    private boolean isOperator(char exprChar) {
-
-        if ('+' == exprChar || '-' == exprChar || '*' == exprChar || '/' == exprChar) {
-            return true;
-        } else {
-            return false;
-        }
 
     }
 
