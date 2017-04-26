@@ -7,6 +7,7 @@ import java.util.Map;
 
 /**
  * @author xyy
+ *  分解表达式，存入
  * @create 2017-04-19 13:38
  **/
 public class Token {
