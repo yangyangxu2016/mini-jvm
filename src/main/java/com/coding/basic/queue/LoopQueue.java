@@ -1,4 +1,4 @@
-package com.coding.basic.stack;
+package com.coding.basic.queue;
 
 /**
  * Created by 14258 on 2017/5/6.
