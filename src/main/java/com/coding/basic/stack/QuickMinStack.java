@@ -12,36 +12,56 @@ import java.util.Stack;
  **/
 public class QuickMinStack {
 
+    //定义两个栈,一个存数据,一个维护大小顺序
+    Stack<Integer> normalStack = new Stack<Integer>();
+    Stack<Integer> minStack = new Stack<Integer>();
 
-    Stack<Integer> stack1 = new Stack();
-    Stack<Integer> stack2 = new Stack();
 
     public void push(int data) {
-        stack1.push(data);
-        if (stack2.isEmpty()) {
-            stack2.push(data);
+        normalStack.push(data);
+
+        if (minStack.isEmpty()) {
+            minStack.push(data);
         } else {
-            if (stack2.peek() >= data) {
-                stack2.push(data);
+            if (minStack.peek() >= data) {
+                minStack.push(data);
             }
         }
     }
 
+
     public int pop() {
-        if (stack1.isEmpty()) {
-            throw new RuntimeException("栈为空");
+        if (normalStack.isEmpty()) {
+            throw new RuntimeException("栈为空!");
         }
-        int temp = stack1.pop();
-        if (temp == stack2.peek()) {
-            stack2.pop();
+        int value = normalStack.pop();
+        if (value == minStack.peek()) {
+            minStack.pop();
         }
-        return temp;
+        return value;
     }
 
+
     public int findMin() {
-        if (stack2.isEmpty()) {
-            throw new RuntimeException("stack2栈为空");
+        if (minStack.isEmpty()) {
+            throw new RuntimeException("栈为空!");
         }
-        return stack2.peek();
+        return minStack.peek();
     }
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
 }
