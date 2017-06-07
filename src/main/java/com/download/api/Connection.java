@@ -9,7 +9,6 @@ import java.io.IOException;
  * @create 2017-06-07 10:06
  **/
 public interface Connection {
-
     /**
      * @Author xuyangyang
      * @Describe  给定开始和结束位置， 读取数据， 返回值是字节数组
@@ -38,7 +37,4 @@ public interface Connection {
      * @Return
      */
     void close();
-
-
-    
 }

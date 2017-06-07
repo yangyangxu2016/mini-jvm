@@ -12,10 +12,6 @@ public class ConnectionManagerImpl implements ConnectionManager {
 
     @Override
     public Connection open(String url) throws ConnectionException {
-
         return new ConnectionImpl(url);
     }
-
-
-
 }

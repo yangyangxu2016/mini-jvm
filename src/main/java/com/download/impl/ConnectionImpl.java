@@ -30,7 +30,6 @@ public class ConnectionImpl implements Connection {
 
     }
 
-
     @Override
     public byte[] read(int startPos, int endPos) throws IOException {
 

@@ -7,8 +7,6 @@ package com.download.api;
  * @create 2017-06-07 10:05
  **/
 public interface ConnectionManager {
-
-    
     /**
      * @Author xuyangyang
      * @Describe 给定一个url , 打开一个连接
@@ -17,8 +15,4 @@ public interface ConnectionManager {
      * @Return 
      */
     Connection open(String url) throws ConnectionException;
-
-
-
-
 }

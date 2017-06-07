@@ -13,9 +13,6 @@ import org.junit.Test;
  * @create 2017-06-07 11:05
  **/
 public class ConnectionTest {
-
-
-
     @Before
     public void setUp() throws Exception {
     }
@@ -50,9 +47,6 @@ public class ConnectionTest {
 
         Assert.assertEquals(1000, data.length);
 
-
         // 测试不充分，没有断言内容是否正确
     }
-
-
 }
