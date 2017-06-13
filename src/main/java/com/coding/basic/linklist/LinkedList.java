@@ -1,125 +1,163 @@
 package com.coding.basic.linklist;
 
-import com.coding.basic.Iterator;
 import com.coding.basic.List;
 
+import java.util.NoSuchElementException;
+
 public class LinkedList implements List {
-	
-	private Node head;
-	
-	public void add(Object o){
-		
+
+	private transient int size = 0;
+
+	private transient Node first;
+
+	private transient Node last;
+
+	public LinkedList() {
+
 	}
-	public void add(int index , Object o){
-		
+
+	public boolean add(Object o) {
+		linkLast(o);
+		return false;
 	}
-	public Object get(int index){
-		return null;
+
+	private void linkLast(Object o) {
+		final Node l = last;
+		final Node newNode = new Node(l, o, null);
+		last = newNode;
+		if (l == null)
+			first = newNode;
+		else
+			l.next = newNode;
+		size++;
+
 	}
-	public Object remove(int index){
-		return null;
+
+	public void add(int index, Object o) {
+		if (index < 0 || index > size()) {
+			throw new ArrayIndexOutOfBoundsException("数组下标越界异常");
+		}
+
+		if (index == size) {
+			linkLast(o);
+		} else {
+			linkBefore(o, node(index));
+		}
+
 	}
-	
-	public int size(){
-		return -1;
+
+	private void linkBefore(Object o, Node node) {
+		final Node prev = node.prev;
+		final Node newNode = new Node(prev, o, node);
+		node.prev = newNode;
+		if (prev == null) {
+			first = newNode;
+		} else {
+			prev.next = newNode;
+		}
+		size++;
 	}
-	
-	public void addFirst(Object o){
-		
+
+	private Node node(int index) {
+		if (index < (size >> 1)) {
+			Node x = first;
+			for (int i = 0; i < index; i++) {
+				x = x.next;
+			}
+			return x;
+		} else {
+			Node x = last;
+			for (int i = size - 1; i > index; i--) {
+				x = x.prev;
+			}
+			return x;
+		}
 	}
-	public void addLast(Object o){
-		
+
+	public Object get(int index) {
+		if (index < 0 || index > size) {
+			throw new ArrayIndexOutOfBoundsException("数组下标越界异常");
+		}
+
+		return node(index).item;
 	}
-	public Object removeFirst(){
-		return null;
+
+	public Object remove(Object o) {
+		return removeFirst();
 	}
-	public Object removeLast(){
-		return null;
+
+	private Object removeFirst() {
+		final Node f = first;
+		if (first == null) {
+			throw new NoSuchElementException();
+		}
+		return unlinkFirst(f);
 	}
-	public Iterator iterator(){
-		return null;
+
+	private Object unlinkFirst(Node f) {
+		final Object elem = f.item;
+		final Node next = f.next;
+		f.item = null;
+		f.next = null;
+
+		first = next;
+		if (next == null) {
+			last = null;
+		} else {
+			next.prev = null;
+		}
+		size--;
+		return elem;
 	}
-	
-	
-	private static  class Node{
-		Object data;
+
+	public Object remove(int index) {
+		if (index < 0 || index >= size) {
+			throw new NoSuchElementException();
+		}
+
+
+		return unLink(node(index));
+	}
+
+	private Object unLink(Node node) {
+		final Object elem = node.item;
+		final Node next = node.next;
+		final Node prev = node.prev;
+
+		if (prev == null) {
+			first = next;
+		} else {
+			prev.next = next;
+			node.prev = null;
+		}
+
+		if (next == null) {
+			last = prev;
+		} else {
+			next.prev = prev;
+			node.next = next;
+		}
+		node.item = null;
+		size--;
+
+		return elem;
+	}
+
+
+	public int size() {
+		return size;
+	}
+
+
+	private static class Node {
+		Object item;
+		Node prev;
 		Node next;
-		
-	}
-	
-	/**
-	 * 把该链表逆置
-	 * 例如链表为 3->7->10 , 逆置后变为  10->7->3
-	 */
-	public  void reverse(){		
-		
-	}
-	
-	/**
-	 * 删除一个单链表的前半部分
-	 * 例如：list = 2->5->7->8 , 删除以后的值为 7->8
-	 * 如果list = 2->5->7->8->10 ,删除以后的值为7,8,10
 
-	 */
-	public  void removeFirstHalf(){
-		
-	}
-	
-	/**
-	 * 从第i个元素开始， 删除length 个元素 ， 注意i从0开始
-	 * @param i
-	 * @param length
-	 */
-	public  void remove(int i, int length){
-		
-	}
-	/**
-	 * 假定当前链表和listB均包含已升序排列的整数
-	 * 从当前链表中取出那些listB所指定的元素
-	 * 例如当前链表 = 11->101->201->301->401->501->601->701
-	 * listB = 1->3->4->6
-	 * 返回的结果应该是[101,301,401,601]  
-	 * @param list
-	 */
-	public  int[] getElements(LinkedList list){
-		return null;
-	}
-	
-	/**
-	 * 已知链表中的元素以值递增有序排列，并以单链表作存储结构。
-	 * 从当前链表中中删除在listB中出现的元素 
-
-	 * @param list
-	 */
-	
-	public  void subtract(LinkedList list){
-		
-	}
-	
-	/**
-	 * 已知当前链表中的元素以值递增有序排列，并以单链表作存储结构。
-	 * 删除表中所有值相同的多余元素（使得操作后的线性表中所有元素的值均不相同）
-	 */
-	public  void removeDuplicateValues(){
-		
-	}
-	
-	/**
-	 * 已知链表中的元素以值递增有序排列，并以单链表作存储结构。
-	 * 试写一高效的算法，删除表中所有值大于min且小于max的元素（若表中存在这样的元素）
-	 * @param min
-	 * @param max
-	 */
-	public  void removeRange(int min, int max){
-		
-	}
-	
-	/**
-	 * 假设当前链表和参数list指定的链表均以元素依值递增有序排列（同一表中的元素值各不相同）
-	 * 现要求生成新链表C，其元素为当前链表和list中元素的交集，且表C中的元素有依值递增有序排列
-	 * @param list
-	 */
-	public  LinkedList intersection( LinkedList list){
-		return null;
+		public Node(Node prev, Object item, Node next) {
+			this.item = item;
+			this.prev = prev;
+			this.next = next;
+		}
 	}
 }
