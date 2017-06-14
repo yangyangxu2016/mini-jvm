@@ -1,25 +1,25 @@
 package com.coding.basic.array;
 
-import com.coding.basic.Iterator;
-import com.coding.basic.List;
+import com.coding.basic.XIterator;
+import com.coding.basic.XList;
 
-import java.util.Arrays;
+import java.util.Objects;
 
 
 /**
  * @author xyy
  * @create 2017-06-13 14:08
  **/
-public class ArrayList implements List{
-
-	private transient Object[] elementData = new Object[10];
+public class XArrayList implements XList {
 
 	private int size;
+	private transient Object[] elementData = new Object[10];
 
 
 	public boolean add(Object o) {
 		ensureCapacity(size + 1);
-		elementData[size++] = o;
+		elementData[size] = o;
+		size++;
 		return true;
 	}
 
@@ -31,6 +31,7 @@ public class ArrayList implements List{
 		ensureCapacity(size + 1);
 		System.arraycopy(elementData, index, elementData, index + 1, size - index);
 		elementData[index] = o;
+		size++;
 	}
 
 
@@ -58,7 +59,8 @@ public class ArrayList implements List{
 		if (numSize > 0) {
 			System.arraycopy(elementData, index + 1, elementData, index, numSize);
 		}
-		elementData[--size] = null;
+		elementData[size - 1] = null;
+		size--;
 	}
 
 
@@ -71,21 +73,51 @@ public class ArrayList implements List{
 		if (numSize > 0) {
 			System.arraycopy(elementData, index + 1, elementData, index, numSize);
 		}
-		elementData[--size] = null;
+		elementData[size - 1] = null;
+		size--;
 		return oldValue;
 	}
 
-	public int size() {
-		return size;
-	}
 
 	public Object get(int index) {
-		if (index >= size) {
+		if (index < 0 || index >= size) {
 			throw new ArrayIndexOutOfBoundsException("数据下标越界异常");
 		}
 		return elementData[index];
 	}
 
+
+	public void clear() {
+		for (int i = 0; i < size; i++) {
+			elementData[i] = null;
+		}
+		size = 0;
+	}
+
+	public int size() {
+		return this.size;
+	}
+
+	public boolean isEmpty() {
+		return this.size == 0;
+	}
+
+	public int indexOf(Object o) {
+		for (int i = 0; i < size; i++) {
+			if (Objects.equals(o, elementData[i])) {
+				return i;
+			}
+		}
+		return -1;
+	}
+
+	/**
+	 * @Author xuyangyang
+	 * @Describe 确保数组容量大小
+	 * @Date 2017/6/14
+	 * @Params a
+	 * @Return a
+	 */
 	private void ensureCapacity(int minCapacity) {
 		int oldCapacity = elementData.length;
 		if (minCapacity > oldCapacity) {
@@ -93,12 +125,34 @@ public class ArrayList implements List{
 			if (minCapacity > newCapacity) {
 				newCapacity = minCapacity;
 			}
-			elementData = Arrays.copyOf(elementData, newCapacity);
+			Object[] newArray = new Object[newCapacity];
+			System.arraycopy(elementData, 0, newArray, 0, newCapacity);
+			elementData = newArray;
+//			elementData = Arrays.copyOf(elementData, newCapacity);
 		}
 	}
 
-	public Iterator iterator() {
-		return null;
+	public XIterator iterator() {
+		return new ArrayListIterator();
+	}
+
+	private class ArrayListIterator implements XIterator {
+
+		private int position;
+
+		@Override
+		public boolean hasNext() {
+			return position < size();
+		}
+
+		@Override
+		public Object next() {
+			if (hasNext()) {
+				return get(position++);
+			}
+			return null;
+		}
+
 	}
 
 

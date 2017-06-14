@@ -1,6 +1,6 @@
 package com.coding.basic;
 
-public interface Iterator {
+public interface XIterator {
 	public boolean hasNext();
 	public Object next();
 
