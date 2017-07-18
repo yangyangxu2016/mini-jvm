@@ -1,83 +1,90 @@
-//package com.coding.basic.stack;
-//
-//import org.junit.After;
-//import org.junit.Before;
-//import org.junit.Test;
-//
-//import java.util.Stack;
-//
-///**
-// * Created by 14258 on 2017/4/9.
-// */
-//public class StackUtilTest {
-//
-//    java.util.Stack<Integer> s = new java.util.Stack<Integer>();
-//
-//
-//    @Before
-//    public void setUp() throws Exception {
-//
-//        for (int i = 0; i < 10; i++) {
-//            s.push(i);
-//        }
-//        //集合遍历方式
-//        for (Integer x : s) {
-//            System.out.println(x);
-//        }
-////        while (!s.empty()){
-////            System.out.println(s.pop());
-////        }
-////        System.out.println("-----------1-----------");
-//
-//
-//    }
-//
-//    @After
-//    public void tearDown() throws Exception {
-//
-//    }
-//
-//    @Test
-//    public void testReverse() throws Exception {
-//        Stack ss = StackUtil.reverse(s);
-//
-//        for (Object xx : ss) {
-//            System.out.println(xx);
-//        }
-//
-//
-//    }
-//
-//    @Test
-//    public void testRemove() throws Exception {
-//        Stack ss = StackUtil.remove(s, 1);
-//        for (Object xx : ss) {
-//            System.out.println(xx);
-//        }
-//
-//
-//    }
-//
-//    @Test
-//    public void testGetTop() throws Exception {
-//        Object[] ss = StackUtil.getTop(s, 11);
-//
-//        for (Object o : ss) {
-//            System.out.println(o);
-//
-//        }
-//    }
-//
-//    @Test
-//    public void testIsValidPairs() throws Exception {
-//
-//        String str = "({[ddf]})";
-//        System.out.println(  StackUtil.isValidPairs(str)
-//        );
-//    }
-//
-//    @Test
-//    public void testMain() throws Exception {
-//
-//    }
-//}
+package com.coding.basic.stack;
+
+import org.junit.After;
+import org.junit.Assert;
+import org.junit.Before;
+import org.junit.Test;
+
+import java.util.Stack;
+
+public class StackUtilTest {
+
+    @Before
+    public void setUp() throws Exception {
+    }
+
+    @After
+    public void tearDown() throws Exception {
+    }
+
+    @Test
+    public void testAddToBottom() {
+        Stack<Integer> s = new Stack();
+        s.push(1);
+        s.push(2);
+        s.push(3);
+
+        StackUtil.addToBottom(s, 0);
+
+        Assert.assertEquals("[0, 1, 2, 3]", s.toString());
+
+    }
+
+    @Test
+    public void testReverse() {
+        Stack<Integer> s = new Stack();
+        s.push(1);
+        s.push(2);
+        s.push(3);
+        s.push(4);
+        s.push(5);
+        Assert.assertEquals("[1, 2, 3, 4, 5]", s.toString());
+        StackUtil.reverse(s);
+        Assert.assertEquals("[5, 4, 3, 2, 1]", s.toString());
+    }
+
+    @Test
+    public void testReverse_247565311() {
+        Stack<Integer> s = new Stack();
+        s.push(1);
+        s.push(2);
+        s.push(3);
+
+        Assert.assertEquals("[1, 2, 3]", s.toString());
+        StackUtil.reverse_247565311(s);
+        Assert.assertEquals("[3, 2, 1]", s.toString());
+    }
+
+    @Test
+    public void testRemove() {
+        Stack<Integer> s = new Stack();
+        s.push(1);
+        s.push(2);
+        s.push(3);
+        StackUtil.remove(s, 2);
+        Assert.assertEquals("[1, 3]", s.toString());
+    }
+
+    @Test
+    public void testGetTop() {
+        Stack<Integer> s = new Stack();
+        s.push(1);
+        s.push(2);
+        s.push(3);
+        s.push(4);
+        s.push(5);
+        {
+            Object[] values = StackUtil.getTop(s, 3);
+            Assert.assertEquals(5, values[0]);
+            Assert.assertEquals(4, values[1]);
+            Assert.assertEquals(3, values[2]);
+        }
+    }
+
+    @Test
+    public void testIsValidPairs() {
+        Assert.assertTrue(StackUtil.isValidPairs("([e{d}f])"));
+        Assert.assertFalse(StackUtil.isValidPairs("([b{x]y})"));
+    }
+
+}

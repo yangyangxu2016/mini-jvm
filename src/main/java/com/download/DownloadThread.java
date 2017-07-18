@@ -39,6 +39,7 @@ public class DownloadThread extends Thread {
             raf.write(bytes);
             raf.close();
             conn.close();
+            //线程在这里等待，直到所有线程都到达barrier。
             barrier.await();//等待别的线程完成
         } catch (Exception e) {
             e.printStackTrace();

@@ -4,7 +4,6 @@ package com.coderising.jvm.attr;
 import com.coderising.jvm.clz.ClassFile;
 import com.coderising.jvm.constant.ConstantPool;
 import com.coderising.jvm.loader.ByteCodeIterator;
-import com.sun.org.apache.bcel.internal.classfile.ExceptionTable;
 
 /**
  * 方法内代码表

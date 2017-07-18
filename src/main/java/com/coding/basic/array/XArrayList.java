@@ -136,6 +136,9 @@ public class XArrayList implements XList {
 		return new ArrayListIterator();
 	}
 
+	/**
+	 * 内部类，和类的实例做绑定
+	 */
 	private class ArrayListIterator implements XIterator {
 
 		private int position;

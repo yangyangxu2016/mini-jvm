@@ -13,7 +13,6 @@ import org.junit.Test;
  **/
 public class StackWithTwoQueuesTest {
 
-
     @Before
     public void setUp() throws Exception {
     }
@@ -37,6 +36,5 @@ public class StackWithTwoQueuesTest {
         Assert.assertEquals(2, stack.pop());
         Assert.assertEquals(1, stack.pop());
     }
-
 
 }

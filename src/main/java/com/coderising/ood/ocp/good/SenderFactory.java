@@ -8,8 +8,6 @@ import java.util.NoSuchElementException;
  **/
 public class SenderFactory {
 
-
-
     public static Sender createSendType(String type) {
 
         if (type.equals("SMS_LOG")) {

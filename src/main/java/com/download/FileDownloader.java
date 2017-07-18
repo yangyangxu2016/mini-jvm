@@ -56,12 +56,15 @@ public class FileDownloader {
      然后调用read方法， read方法中有读取文件的开始位置和结束位置的参数， 返回值是byte[]数组
      3. 把byte数组写入到文件中
      4. 所有的线程都下载完成以后， 需要调用listener的notifiedFinished方法
-
-     下面的代码是示例代码， 也就是说只有一个线程， 你需要改造成多线程的。
+     -------------关于CyclicBarrier----------参考:http://www.cnblogs.com/techyc/archive/2013/03/13/2957059.html
+      5.CyclicBarrier初始化时规定一个数目，然后计算调用了CyclicBarrier.await()进入等待的线程数。当线程数达到了这个数目时，所有进入等待状态的线程被唤醒并继续。
+      6.CyclicBarrier就象它名字的意思一样，可看成是个障碍， 所有的线程必须到齐后才能一起通过这个障碍。
+      7.CyclicBarrier初始时还可带一个Runnable的参数， 此Runnable任务在CyclicBarrier的数目达到后，所有其它线程被唤醒前被执行。
      */
     public void execute() {
 
         CyclicBarrier barrier = new CyclicBarrier(DOWNLOAD_TRHEAD_NUM, new Runnable() {
+            //当所有线程到达DOWNLOAD_TRHEAD_NUM时执行
             @Override
             public void run() {
                 listener.notifyFinished();

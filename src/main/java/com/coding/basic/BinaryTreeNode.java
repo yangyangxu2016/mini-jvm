@@ -24,9 +24,10 @@ public class BinaryTreeNode {
 	public void setRight(BinaryTreeNode right) {
 		this.right = right;
 	}
-	
+
 	public BinaryTreeNode insert(Object o){
 		return  null;
 	}
-	
+
 }
+

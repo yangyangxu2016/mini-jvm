@@ -4,7 +4,6 @@ package com.coderising.jvm.loader;
 import com.coderising.jvm.util.BytesIterUtil;
 
 import java.util.Arrays;
-import java.util.Timer;
 
 public class ByteCodeIterator {
 

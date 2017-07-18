@@ -1,10 +1,10 @@
 package com.coding.basic.linklist;
 
-import com.coding.basic.List;
+import com.coding.basic.XList;
 
 import java.util.NoSuchElementException;
 
-public class LinkedList implements List {
+public class XLinkedList implements XList {
 
 	private transient int size = 0;
 
@@ -12,13 +12,13 @@ public class LinkedList implements List {
 
 	private transient Node last;
 
-	public LinkedList() {
+	public XLinkedList() {
 
 	}
 
 	public boolean add(Object o) {
 		linkLast(o);
-		return false;
+		return true;
 	}
 
 	private void linkLast(Object o) {
@@ -30,9 +30,11 @@ public class LinkedList implements List {
 		else
 			l.next = newNode;
 		size++;
-
 	}
 
+	public void addLast(Object o) {
+		linkLast(o);
+	}
 	public void add(int index, Object o) {
 		if (index < 0 || index > size()) {
 			throw new ArrayIndexOutOfBoundsException("数组下标越界异常");
@@ -82,9 +84,27 @@ public class LinkedList implements List {
 		return node(index).item;
 	}
 
+
 	public Object remove(Object o) {
-		return removeFirst();
+		if (o == null) {
+			for (Node x = first; x != null; x = x.next) {
+				if (x.item == null) {
+					unLink(x);
+					return true;
+				}
+			}
+		} else {
+			for (Node x = first; x != null; x = x.next) {
+				if (o.equals(x.item)) {
+					unLink(x);
+					return true;
+				}
+			}
+		}
+		return false;
 	}
+
+
 
 	private Object removeFirst() {
 		final Node f = first;
@@ -148,7 +168,19 @@ public class LinkedList implements List {
 		return size;
 	}
 
+	@Override
+	public boolean isEmpty() {
+		return false;
+	}
 
+	@Override
+	public void clear() {
+
+	}
+
+	/**
+	 * 静态类。和类做绑定
+	 */
 	private static class Node {
 		Object item;
 		Node prev;
@@ -160,4 +192,15 @@ public class LinkedList implements List {
 			this.next = next;
 		}
 	}
+
+
+
+
+
+
+
+
+
+
+
 }
