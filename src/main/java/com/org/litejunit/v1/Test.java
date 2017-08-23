@@ -1,6 +1,12 @@
-package com.org.litejunit.v1; /**
+package com.org.litejunit.v1;
+
+
+/**
  * @author xyy
  * @create 2017-08-22 16:07
  **/
-public class Test {
+public interface Test {
+    int countTestCases();
+    void run(TestResult tr);
+
 }
